@@ -1,0 +1,51 @@
+services:
+  app:
+    image: koldin/storypool:latest
+    container_name: storypool-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - storypool_mysql
+      - storypool_redis
+    env_file:
+      - ./.env
+    networks:
+      - storypool-network
+    # restart: unless-stopped
+
+  storypool_mysql:
+    image: mysql:8.0
+    container_name: storypool_db
+    environment:
+      MYSQL_ROOT_PASSWORD: "1234"
+      MYSQL_DATABASE: "storypool"
+      MYSQL_USER: "storypool"
+      MYSQL_PASSWORD: "1234"
+    ports:
+      - "3333:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - storypool-network
+    restart: unless-stopped
+
+  storypool_redis:
+    image: redis:7-alpine
+    container_name: storypool_redis
+    environment:
+      REDIS_PASSWORD: "1234"
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - storypool-network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  storypool-network:
+    driver: bridge

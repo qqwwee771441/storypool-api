@@ -1,0 +1,21 @@
+package com.wudc.storypool.domain.fairytale.controller.response;
+
+import com.wudc.storypool.domain.fairytale.entity.constant.FairytaleStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.time.LocalDateTime;
+
+@Schema(description = "동화 생성 완료 알림 응답")
+public record NotifyFairytaleCompletionResponse(
+    @Schema(description = "업데이트된 Fairytale ID", example = "01F8XYZABC123456DEF7890GHI")
+    String id,
+    
+    @Schema(description = "갱신된 상태", example = "COMPLETED")
+    FairytaleStatus status,
+    
+    @Schema(description = "갱신된 메시지", example = "동화 생성이 완료되었습니다.")
+    String message,
+    
+    @Schema(description = "최종 변경 시각", example = "2025-07-10T12:30:00")
+    LocalDateTime updatedAt
+) {}
